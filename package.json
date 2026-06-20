@@ -4,10 +4,22 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "pm2 start app.js --watch"
+    "dev": "nodemon app.js",
+    "start": "pm2 start app.js --watch",
+    "restart": "pm2 restart app",
+    "stop": "pm2 stop app",
+    "delete": "pm2 delete app",
+    "status": "pm2 status",
+    "logs": "pm2 logs app",
+    "monit": "pm2 monit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "ws": "^8.21.0"
+  }
 }
