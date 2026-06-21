@@ -10,9 +10,23 @@ app.get('/', function (req, res) {
 server.on('request', app);
 
 process.on('SIGINT', () => {
+  console.log('Received SIGINT, shutting down...');
+
+  wss.clients.forEach((client) => {
+    client.close();
+  });
+
   server.close(() => {
     shutdownDB();
+    db.on('close', () => {
+      process.exit(0);
+    });
   });
+
+  setTimeout(() => {
+    console.log('Forced shutdown after timeout');
+    process.exit(1);
+  }, 5000);
 });
 
 server.listen(PORT, function () {
@@ -84,7 +98,13 @@ function getCounts() {
 function shutdownDB() {
   getCounts();
   console.log('shutting down DB');
-  db.close();
+  db.close((err) => {
+    if (err) {
+      console.error('Error closing database:', err);
+    } else {
+      console.log('Database closed');
+    }
+  });
 }
 
 /** End Database stuff **/
