@@ -29,6 +29,9 @@ wss.on('connection', function connection(ws) {
     ws.send('welcome!');
   }
 
+  db.run(
+    ' INSERT INTO visitors (count, time) VALUES (${numClients}, ${Date.now()}) ',
+  );
   ws.on('close', function close() {
     wss.broadcast(`Current visitors: ${wss.clients.size}`);
     console.log('A client has disconnected');
